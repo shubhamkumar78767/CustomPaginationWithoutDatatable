@@ -14,14 +14,14 @@
         <form action="{{ url('/users') }}" method="GET" autocomplete="off">
             <select name="limit" id="limit">
                 <option value="">Select</option>
-                <option value="25" {{ old('limit') == '25' ? 'selected' : '' }}>25</option>
-                <option value="50" {{ old('limit') == '50' ? 'selected' : '' }}>50</option>
-                <option value="75" {{ old('limit') == '75' ? 'selected' : '' }}>75</option>
-                <option value="100" {{ old('limit') == '100' ? 'selected' : '' }}>100</option>
+                <option value="25" {{ old('limit') == 25 ? 'selected' : '' }}>25</option>
+                <option value="50" {{ old('limit') == 50 ? 'selected' : '' }}>50</option>
+                <option value="75" {{ old('limit') == 75 ? 'selected' : '' }}>75</option>
+                <option value="100" {{ old('limit') == 100 ? 'selected' : '' }}>100</option>
             </select>
-            <input type="text" name="search" id="search" value="{{ old('search') }}">
-            <input type="submit" class="btn btn-sm btn-primary" value="Filter" {{ old('search') ? old('search') : '' }}>
-            <a href="{{ url('/users') }}" class="btn btn-sm btn-primary">Reset</a>
+            <input type="text" name="search" id="search" placeholder="SearchBy: Email,Name" value="{{ old('search') }}">
+            <input type="submit" class="btn btn-sm btn-primary" value="Filter" >
+            <a href="{{ url('/users') }}" class="btn btn-sm btn-primary">Reset Filter</a>
 
         </form>
     </div>

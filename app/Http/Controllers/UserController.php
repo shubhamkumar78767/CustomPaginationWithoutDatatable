@@ -12,22 +12,29 @@ class UserController extends Controller
 {
     public function index(Request $req)
     {
+        $where = $req->input('where') ?? [
+            ['id', '>', 0],
+            // ['created_at', '>', '2022-01-01']
+        ];
+
         $page = $req->input('page') ?? 1;
         $search = $req->input('search') ?? '';
         $limit = $req->input('limit') ?? 10; // Set the number of records per page
         $offset = ($page - 1) * $limit;
 
         $users = DB::table('users')
-            ->where('id', '>', 0)
+            ->where($where)
             ->when($search, function ($query, $search) {
                 return $query->where(function ($query) use ($search) {
                     $query->orWhere('name', 'like', '%' . $search . '%')
                         ->orWhere('email', 'like', '%' . $search . '%');
                 });
             })
-            ->offset($offset)
-            ->paginate($limit);
 
+        ->offset($offset)
+        ->paginate($limit);
+        
+        // append url parameter with pagination links
         $users->appends(['search' => $search]);
         $users->appends(['limit' => $limit]);
 
