@@ -21,13 +21,10 @@ class UserController extends Controller
         ->paginate($limit);
 
         // Fetch the records for the current page
-        $records = User::paginate($limit);
-
-        // Get the current page number
-        $currentPage = $records->currentPage();
+        $currentPage = $users->currentPage();
 
         // Get the last page number
-        $lastPage = $records->lastPage();
+        $lastPage = $users->lastPage();
 
         // Get the first and last page url
         $firstPageUrl = $users->url(1);
@@ -45,12 +42,12 @@ class UserController extends Controller
         $html = '<nav aria-label="Page navigation example"><ul class="pagination">';
 
         // Add the "Previous" link
-        if ($records->onFirstPage()) {
+        if ($users->onFirstPage()) {
 
             $html .= '<li class="page-item disabled"><span class="page-link">Prev</span></li>';
         } else {
             $html .= '<li class="page-item"><a class="page-link" href="' . $firstPageUrl . '" rel="first">First</a></li>';
-            $html .= '<li class="page-item"><a class="page-link" href="' . $records->previousPageUrl() . '" rel="prev">Prev</a></li>';
+            $html .= '<li class="page-item"><a class="page-link" href="' . $users->previousPageUrl() . '" rel="prev">Prev</a></li>';
         }
 
         // Add the page links
@@ -58,13 +55,13 @@ class UserController extends Controller
             if ($i == $currentPage) {
                 $html .= '<li class="page-item active d-inline-block"><span class="page-link">' . $i . '</span></li>';
             } else {
-                $html .= '<li class="page-item d-inline-block"><a class="page-link" href="' . $records->url($i) . '">' . $i . '</a></li>';
+                $html .= '<li class="page-item d-inline-block"><a class="page-link" href="' . $users->url($i) . '">' . $i . '</a></li>';
             }
         }
 
         // Add the "Next" link
-        if ($records->hasMorePages()) {
-            $html .= '<li class="page-item d-inline-block"><a class="page-link" href="' . $records->nextPageUrl() . '" rel="next">Next</a></li>';
+        if ($users->hasMorePages()) {
+            $html .= '<li class="page-item d-inline-block"><a class="page-link" href="' . $users->nextPageUrl() . '" rel="next">Next</a></li>';
             $html .= '<li class="page-item d-inline-block"><a class="page-link" href="' . $lastPageUrl . '" rel="last">Last</a></li>';
         } else {
             $html .= '<li class="page-item disabled d-inline-block"><span class="page-link">Next</span></li>';
