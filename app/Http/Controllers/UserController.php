@@ -18,7 +18,7 @@ class UserController extends Controller
         $offset = ($page - 1) * $limit;
 
         $users = DB::table('users')
-            ->where('id','>', 0)
+            ->where('id', '>', 0)
             ->when($search, function ($query, $search) {
                 return $query->where(function ($query) use ($search) {
                     $query->orWhere('name', 'like', '%' . $search . '%')
