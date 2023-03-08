@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
     {
         $data = [];
 
-        for ($i = 1; $i <= 5000000; $i++) {
+        for ($i = 1; $i <= 220000; $i++) {
             $data[] = [
                 'name' => 'User ' . $i,
                 'email' => 'user' . $i . '@example.com',

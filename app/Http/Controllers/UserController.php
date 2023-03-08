@@ -13,18 +13,30 @@ class UserController extends Controller
     public function index(Request $req)
     {
         $page = $req->input('page') ?? 1;
-        $limit = 10; // Set the number of records per page
+        $search = $req->input('search') ?? '';
+        $limit = $req->input('limit') ?? 10; // Set the number of records per page
         $offset = ($page - 1) * $limit;
 
         $users = DB::table('users')
-        ->offset($offset)
-        ->paginate($limit);
+            ->where('id','>', 0)
+            ->when($search, function ($query, $search) {
+                return $query->where(function ($query) use ($search) {
+                    $query->orWhere('name', 'like', '%' . $search . '%')
+                        ->orWhere('email', 'like', '%' . $search . '%');
+                });
+            })
+            ->offset($offset)
+            ->paginate($limit);
+
+        $users->appends(['search' => $search]);
+        $users->appends(['limit' => $limit]);
 
         // Fetch the records for the current page
         $currentPage = $users->currentPage();
 
         // Get the last page number
         $lastPage = $users->lastPage();
+        // echo $lastPage; die;
 
         // Get the first and last page url
         $firstPageUrl = $users->url(1);
@@ -69,11 +81,12 @@ class UserController extends Controller
 
         $html .= '</ul></nav>';
 
-        
-        return view('listing', compact('users','html'));
+
+        return view('listing', compact('users', 'html'));
     }
 
-    public function SeedDatabase(){
+    public function SeedDatabase()
+    {
         SeedDatabase::dispatch();
     }
 }
